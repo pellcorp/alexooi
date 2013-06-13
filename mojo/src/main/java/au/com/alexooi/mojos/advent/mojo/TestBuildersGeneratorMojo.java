@@ -118,7 +118,7 @@ public class TestBuildersGeneratorMojo extends AbstractMojo
 
     private boolean isOutOfDate() {
         getLog().info("Advent Flag File: " + flagFile);
-        if (!flagFile.exists()) {
+        if (flagFile.exists()) {
             if (generatedFlags != null) {
                 for (File generatedFlag : generatedFlags) {
                     getLog().info("Advent Generated Flag: " + generatedFlag);
@@ -127,9 +127,9 @@ public class TestBuildersGeneratorMojo extends AbstractMojo
                     }
                 }
             }
-            return false; // present of flag file only is enough!
-        } else {
             return false;
+        } else {
+            return true; // else need to generate as no flag file yet!
         }
     }
     
