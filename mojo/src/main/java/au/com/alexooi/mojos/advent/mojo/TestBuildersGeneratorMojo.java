@@ -69,9 +69,8 @@ public class TestBuildersGeneratorMojo extends AbstractMojo
      * @readonly
      */
     private File outputDirectory;
-
+    
     private MavenSourceJarFactory mavenSourceJarFactory;
-
 
     public TestBuildersGeneratorMojo()
     {
@@ -80,7 +79,6 @@ public class TestBuildersGeneratorMojo extends AbstractMojo
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void execute() throws MojoExecutionException, MojoFailureException
     {
         if (isOutOfDate()) 
@@ -91,10 +89,11 @@ public class TestBuildersGeneratorMojo extends AbstractMojo
             getLog().info("Advent Generating ...");
             
 	    outputDirectory.mkdirs();
-	    project.getTestCompileSourceRoots().add(outputDirectory.getAbsolutePath());
-	    // Resource resource = new Resource();
-	    // resource.setDirectory(outputDirectory.getAbsolutePath());
-	    // project.addTestResource(resource);
+	    project.addTestCompileSourceRoot(outputDirectory.getPath());
+	    
+	    Resource resource = new Resource();
+	    resource.setDirectory(outputDirectory.getPath());
+	    project.addTestResource(resource);
 	        
 	    for (String classFqn : classFqns)
 	    {

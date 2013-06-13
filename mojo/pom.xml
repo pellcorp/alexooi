@@ -6,12 +6,9 @@
     <artifactId>mojo</artifactId>
     <name>Advent - Mojo</name>
     <packaging>maven-plugin</packaging>
-	<version>1.6.2</version>
+	<version>1.6.3</version>
 	
 	<properties>
-		<!-- FIXME fix up the dirs below so they are relative -->
-		<devHome>file:///home/jason/Development</devHome>
-
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
@@ -79,13 +76,8 @@
 	<distributionManagement>
 	    <repository>
 	        <id>repo</id>
-	        <url>${devHome}/maven2/releases</url>
+	        <url>${maven.repo.dir}/releases</url>
 	    </repository>
-
-	    <snapshotRepository>
-	        <id>snapshot-repo</id>
-	        <url>${devHome}/maven2/snapshots</url>
-	    </snapshotRepository>
 	</distributionManagement>
 </project>
 
