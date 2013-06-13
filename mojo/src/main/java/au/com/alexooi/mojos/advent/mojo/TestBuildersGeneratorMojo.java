@@ -37,12 +37,20 @@ public class TestBuildersGeneratorMojo extends AbstractMojo
     protected MavenProject project;
 
     /**
-	 * Flag file
-	 * 
-	 * @parameter default-value="${project.build.directory}/advent-flag"
-	 * @required
-	 */
-	private File flagFile;
+     * Flag file
+     * 
+     * @parameter default-value="${project.build.directory}/advent-flag"
+     * @required
+     */
+    private File flagFile;
+    
+    /**
+     * Will check for existence of these flags and if they have a newer timestamp than the flagFile, will trigger
+     * a build.
+     * 
+     * @parameter
+     */
+    private File[] generatedFlags;
 	
     /**
      * @parameter
@@ -75,37 +83,57 @@ public class TestBuildersGeneratorMojo extends AbstractMojo
     @SuppressWarnings("unchecked")
     public void execute() throws MojoExecutionException, MojoFailureException
     {
-        if (!flagFile.exists()) {
-        	URLClassLoader classLoader = getClassLoader();
+        if (isOutOfDate()) 
+        {
+            URLClassLoader classLoader = getClassLoader();
             JavaGenerator javaGenerator = new JavaGenerator(classLoader, extraBuilderMethodSupportFqns);
+            
+            
             getLog().info("Generating ...");
             
-	        outputDirectory.mkdirs();
-	        project.getTestCompileSourceRoots().add(outputDirectory.getAbsolutePath());
-	        // Resource resource = new Resource();
-	        // resource.setDirectory(outputDirectory.getAbsolutePath());
-	        // project.addTestResource(resource);
+	    outputDirectory.mkdirs();
+	    project.getTestCompileSourceRoots().add(outputDirectory.getAbsolutePath());
+	    // Resource resource = new Resource();
+	    // resource.setDirectory(outputDirectory.getAbsolutePath());
+	    // project.addTestResource(resource);
 	        
-	        for (String classFqn : classFqns)
+	    for (String classFqn : classFqns)
+	    {
+	        List<GeneratedClass> generatedClasses = javaGenerator.generate(classFqn);
+	        for (GeneratedClass generatedClass : generatedClasses)
 	        {
-	            List<GeneratedClass> generatedClasses = javaGenerator.generate(classFqn);
-	            for (GeneratedClass generatedClass : generatedClasses)
-	            {
-	                saveToFile(generatedClass);
-	            }
+	            saveToFile(generatedClass);
 	        }
-	        mavenSourceJarFactory.cleanUp();
+	    }
+	    mavenSourceJarFactory.cleanUp();
 	        
-	        try {
-	        	FileUtils.write(flagFile, "generated");
-	        } catch (IOException e) {
-	        	return;
-	        }
+	    try {
+	      	FileUtils.write(flagFile, "generated");
+	    } catch (IOException e) {
+	       	return;
+	    }
         } else {
-        	getLog().info("Skipping generation as flag file exists already: " + flagFile);
+            getLog().info("Skipping generation as up to date");
         }
     }
 
+    private boolean isOutOfDate() {
+        getLog().info("Flag File: " + flagFile);
+        if (!flagFile.exists()) {
+            if (generatedFlags != null) {
+                for (File generatedFlag : generatedFlags) {
+                    getLog().info("Generated Flag: " + generatedFlag);
+                    if (generatedFlag.lastModified() > flagFile.lastModified()) {
+                        return true;
+                    }
+                }
+            }
+            return false; // present of flag file only is enough!
+        } else {
+            return false;
+        }
+    }
+    
     private void saveToFile(GeneratedClass generatedClass)
     {
         String className = generatedClass.getClassName();
