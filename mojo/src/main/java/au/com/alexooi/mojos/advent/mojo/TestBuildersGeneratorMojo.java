@@ -112,7 +112,7 @@ public class TestBuildersGeneratorMojo extends AbstractMojo
 	       	return;
 	    }
         } else {
-            getLog().info("Skipping generation as up to date");
+            getLog().info("Advent Skipping generation as up to date");
         }
     }
 
