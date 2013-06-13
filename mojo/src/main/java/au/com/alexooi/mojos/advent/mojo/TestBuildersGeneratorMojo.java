@@ -50,7 +50,7 @@ public class TestBuildersGeneratorMojo extends AbstractMojo
      * 
      * @parameter
      */
-    private File[] generatedFlags;
+    private List<File> generatedFlags;
 	
     /**
      * @parameter
@@ -87,7 +87,6 @@ public class TestBuildersGeneratorMojo extends AbstractMojo
         {
             URLClassLoader classLoader = getClassLoader();
             JavaGenerator javaGenerator = new JavaGenerator(classLoader, extraBuilderMethodSupportFqns);
-            
             
             getLog().info("Generating ...");
             
