@@ -88,7 +88,7 @@ public class TestBuildersGeneratorMojo extends AbstractMojo
             URLClassLoader classLoader = getClassLoader();
             JavaGenerator javaGenerator = new JavaGenerator(classLoader, extraBuilderMethodSupportFqns);
             
-            getLog().info("Generating ...");
+            getLog().info("Advent Generating ...");
             
 	    outputDirectory.mkdirs();
 	    project.getTestCompileSourceRoots().add(outputDirectory.getAbsolutePath());
@@ -117,11 +117,11 @@ public class TestBuildersGeneratorMojo extends AbstractMojo
     }
 
     private boolean isOutOfDate() {
-        getLog().info("Flag File: " + flagFile);
+        getLog().info("Advent Flag File: " + flagFile);
         if (!flagFile.exists()) {
             if (generatedFlags != null) {
                 for (File generatedFlag : generatedFlags) {
-                    getLog().info("Generated Flag: " + generatedFlag);
+                    getLog().info("Advent Generated Flag: " + generatedFlag);
                     if (generatedFlag.lastModified() > flagFile.lastModified()) {
                         return true;
                     }
