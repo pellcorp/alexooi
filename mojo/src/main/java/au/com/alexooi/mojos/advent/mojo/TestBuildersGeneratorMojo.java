@@ -13,65 +13,56 @@ import java.util.List;
 
 import au.com.alexooi.mojos.advent.generator.GeneratedClass;
 import au.com.alexooi.mojos.advent.generator.JavaGenerator;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
+import org.sonatype.plexus.build.incremental.BuildContext;
 
-/**
- * @goal generate
- * @requiresDependencyResolution test
- * @phase generate-test-sources
- */
+@Mojo(name = "generate", 
+   requiresDependencyResolution = ResolutionScope.TEST, 
+   defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES)
 public class TestBuildersGeneratorMojo extends AbstractMojo
 {
-    /**
-     * The maven project.
-     *
-     * @parameter expression="${project}"
-     * @required
-     */
+    @Component
     protected MavenProject project;
 
     /**
      * Flag file
-     * 
-     * @parameter default-value="${project.build.directory}/advent-flag"
-     * @required
      */
+    @Parameter(defaultValue = "${project.build.directory}/advent-flag", required = true)
     private File flagFile;
     
     /**
      * Will check for existence of these flags and if they have a newer timestamp than the flagFile, will trigger
      * a build.
-     * 
-     * @parameter
      */
+    @Parameter
     private List<File> generatedFlags;
 	
-    /**
-     * @parameter
-     * @required
-     */
+    @Parameter(required = true)
     private List<String> classFqns;
 
-    /**
-     * @parameter
-     */
+    @Parameter
     private List<String> extraBuilderMethodSupportFqns;
 
-    /**
-     * @parameter expression="${project.build.directory}/generated-sources/advent"
-     * @required
-     * @readonly
-     */
+    @Parameter(defaultValue = "${project.build.directory}/generated-sources/advent", required = true)
     private File outputDirectory;
     
     private MavenSourceJarFactory mavenSourceJarFactory;
 
+    @Component
+    private BuildContext buildContext;
+    
     public TestBuildersGeneratorMojo()
     {
         this.classFqns = new ArrayList<String>();
@@ -110,6 +101,8 @@ public class TestBuildersGeneratorMojo extends AbstractMojo
 	    } catch (IOException e) {
 	       	return;
 	    }
+	    
+	    buildContext.refresh(outputDirectory);
         } else {
             getLog().info("Advent Skipping generation as up to date");
         }
@@ -164,6 +157,7 @@ public class TestBuildersGeneratorMojo extends AbstractMojo
         List<URL> additionalJars = new ArrayList<URL>();
         try
         {
+            @SuppressWarnings("unchecked")
             List<Artifact> artifacts = project.getCompileArtifacts();
             for (Artifact artifact : artifacts)
             {
