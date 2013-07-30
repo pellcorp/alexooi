@@ -79,30 +79,30 @@ public class TestBuildersGeneratorMojo extends AbstractMojo
             
             getLog().info("Advent Generating ...");
             
-	    outputDirectory.mkdirs();
-	    project.addTestCompileSourceRoot(outputDirectory.getPath());
-	    
-	    Resource resource = new Resource();
-	    resource.setDirectory(outputDirectory.getPath());
-	    project.addTestResource(resource);
-	        
-	    for (String classFqn : classFqns)
-	    {
-	        List<GeneratedClass> generatedClasses = javaGenerator.generate(classFqn);
-	        for (GeneratedClass generatedClass : generatedClasses)
-	        {
-	            saveToFile(generatedClass);
-	        }
-	    }
-	    mavenSourceJarFactory.cleanUp();
-	        
-	    try {
-	      	FileUtils.write(flagFile, "generated");
-	    } catch (IOException e) {
-	       	return;
-	    }
-	    
-	    buildContext.refresh(outputDirectory);
+		    outputDirectory.mkdirs();
+		    project.addTestCompileSourceRoot(outputDirectory.getPath());
+		    
+		    Resource resource = new Resource();
+		    resource.setDirectory(outputDirectory.getPath());
+		    project.addTestResource(resource);
+		        
+		    for (String classFqn : classFqns)
+		    {
+		        List<GeneratedClass> generatedClasses = javaGenerator.generate(classFqn);
+		        for (GeneratedClass generatedClass : generatedClasses)
+		        {
+		            saveToFile(generatedClass);
+		        }
+		    }
+		    mavenSourceJarFactory.cleanUp();
+		        
+		    try {
+		      	FileUtils.write(flagFile, "generated");
+		    } catch (IOException e) {
+		       	return;
+		    }
+		    
+		    buildContext.refresh(outputDirectory);
         } else {
             getLog().info("Advent Skipping generation as up to date");
         }
