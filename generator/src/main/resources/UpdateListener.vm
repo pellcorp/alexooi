@@ -1,0 +1,32 @@
+package $configuration.packageName;
+
+import au.com.alexooi.mojos.advent.api.listeners.PojoUpdateListener;
+
+#set( $objectType = "$configuration.packageName.$configuration.className")
+
+/**
+ * Auto-generated source code. Do NOT ALTER!
+ * <p/>
+ * If you wish to implement any of the methods declared here then sub-class
+ * this class and overide only the methods you care about handling. Make sure
+ * to put your implementation in your src folder and NOT the generated sources
+ * folder, as these will be clobbered on future code generation runs
+ */
+abstract public class $updateListenerClassName implements PojoUpdateListener<$objectType>
+{
+#foreach( $field in $configuration.fields)
+#foreach( $builderMethod in $field.builderMethods )
+#set( $templateName = "_update_listener_" + "$builderMethod.type.template" + ".vm")
+#parse( $templateName )
+#end
+#end
+
+    public void onBuild($objectType theObject)
+    {
+    }
+
+    public void onPersist($objectType theObject)
+    {
+    }
+
+}
