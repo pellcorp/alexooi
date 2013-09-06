@@ -3,33 +3,28 @@
  */
 package au.com.alexooi.mojos.advent.generator;
 
-public class GeneratedClass
-{
-    private final String source;
-    
-    private final String packageName;
+public class GeneratedClass {
+	private final String source;
 
-    private final String className;
+	private final String packageName;
 
-    public GeneratedClass(String source, String packageName, String className)
-    {
-        this.source = source;
-        this.packageName = packageName;
-        this.className = className;
-    }
+	private final String className;
 
-    public String getSource()
-    {
-        return source;
-    }
+	public GeneratedClass(String source, String packageName, String className) {
+		this.source = source;
+		this.packageName = packageName;
+		this.className = className;
+	}
 
-    public String getPackageName()
-    {
-        return packageName;
-    }
+	public String getSource() {
+		return source;
+	}
 
-    public String getClassName()
-    {
-        return className;
-    }
+	public String getPackageName() {
+		return packageName;
+	}
+
+	public String getClassName() {
+		return className;
+	}
 }

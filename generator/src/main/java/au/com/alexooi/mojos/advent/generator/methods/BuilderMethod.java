@@ -3,9 +3,8 @@
  */
 package au.com.alexooi.mojos.advent.generator.methods;
 
-public interface BuilderMethod
-{
-    BuilderMethodType getType();
+public interface BuilderMethod {
+	BuilderMethodType getType();
 
-    String getMethodExceptionsSignature();
+	String getMethodExceptionsSignature();
 }
