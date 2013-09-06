@@ -1,0 +1,10 @@
+#set( $adderMethodName = "add${builderMethod.singularFieldName}" )
+    /**
+     * Called when {@link $builderClassName#theObject} is updated with "value"
+     * @param theObject the object that the corresponding {@link $builderClassName} is attempting to create
+     * @param value The value used to update {@link $builderClassName#theObject}
+     */
+    public void $adderMethodName($objectType theObject, ${builderMethod.genericTypeName} value)
+    {
+    }
+

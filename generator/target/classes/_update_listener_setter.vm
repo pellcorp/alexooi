@@ -1,0 +1,10 @@
+#set( $setterMethodName = "with${field.camelCaseName}" )
+    /**
+     * Called when {@link $builderClassName#theObject} is updated with "${field.name}"
+     * @param theObject the object that the corresponding {@link $builderClassName} is attempting to create
+     * @param ${field.name} The value used to update {@link $builderClassName#theObject}
+     */
+    public void $setterMethodName($objectType theObject, ${builderMethod.genericTypeName} ${field.name})
+    {
+    }
+

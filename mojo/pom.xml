@@ -6,7 +6,7 @@
 	<parent>
         <groupId>au.com.alexooi.mojos</groupId>
         <artifactId>advent</artifactId>
-        <version>1.6.5</version>
+        <version>1.6.6</version>
     </parent>
 
 	<groupId>au.com.alexooi.mojos.advent</groupId>
