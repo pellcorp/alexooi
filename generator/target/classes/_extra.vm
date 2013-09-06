@@ -1,8 +1,0 @@
-    public $builderClassName ${extraMethod.name}($extraMethod.methodSignatureParamters) $extraMethod.methodExceptionsSignature
-    {
-        $extraMethod.extraMethodClazz.canonicalName support = new ${extraMethod.extraMethodClazz.canonicalName}();
-        support.setTheObject(theObject);
-        support.${extraMethod.name}($extraMethod.methodSignatureNames);
-        return this;
-    }
-
