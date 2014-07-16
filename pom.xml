@@ -4,7 +4,7 @@
 
     <groupId>au.com.alexooi.mojos</groupId>
     <artifactId>advent</artifactId>
-    <version>1.6.7</version>
+    <version>1.6.8</version>
     <packaging>pom</packaging>
     <name>Advent</name>
 
@@ -16,8 +16,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
+		<maven.compiler.source>1.6</maven.compiler.source>
+		<maven.compiler.target>1.6</maven.compiler.target>
 	</properties>
 
     <dependencies>
@@ -60,13 +60,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
-        <dependency>
-            <groupId>au.com.alexooi.hamcrest-extensions</groupId>
-            <artifactId>matchers</artifactId>
-            <version>1.6</version>
-            <scope>test</scope>
-        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
