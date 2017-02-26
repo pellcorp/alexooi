@@ -129,7 +129,7 @@ public class TestBuildersGeneratorMojo extends AbstractMojo
     {
         String className = generatedClass.getClassName();
         String packageName = generatedClass.getPackageName();
-        File classDirectory = new File(outputDirectory, packageName.replaceAll("\\.", File.separator));
+        File classDirectory = new File(outputDirectory, packageName.replace('.', File.separatorChar));
         classDirectory.mkdirs();
         File sourceFile = new File(classDirectory, className + ".java");
         try
@@ -161,7 +161,9 @@ public class TestBuildersGeneratorMojo extends AbstractMojo
             List<Artifact> artifacts = project.getCompileArtifacts();
             for (Artifact artifact : artifacts)
             {
-                additionalJars.add(new URL("file://" + artifact.getFile().getAbsolutePath()));
+            	File file = new File(artifact.getFile().getAbsolutePath());
+            	URL url = file.toURI().toURL();
+                additionalJars.add(url);
             }
         }
         catch (MalformedURLException e)

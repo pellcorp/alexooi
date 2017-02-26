@@ -33,7 +33,7 @@ public class MavenSourceJarFactory
     {
         try
         {
-            String outputClassesDirectory = project.getBuild().getOutputDirectory();
+            String outputClassesDirectory = project.getBuild().getOutputDirectory().replace(File.separatorChar, '/');
             jarFile = File.createTempFile(this.getClass().getCanonicalName() + ".file", ".jar");
             log.info("ZIP file at: " + jarFile.getAbsolutePath());
             ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(jarFile));
@@ -41,12 +41,15 @@ public class MavenSourceJarFactory
             List<File> allClassFiles = getProjectCompiledClassFiles(outputClassesDirectory);
             for (File classFile : allClassFiles)
             {
-                zipOutputStream.putNextEntry(new ZipEntry(classFile.getAbsolutePath().replaceFirst(outputClassesDirectory + "/", "")));
+            	String classFilePath = classFile.getAbsolutePath().replace(File.separatorChar, '/');
+            	classFilePath = classFilePath.replaceFirst(outputClassesDirectory + "/", "");
+                zipOutputStream.putNextEntry(new ZipEntry(classFilePath));
                 IOUtils.copy(new FileInputStream(classFile), zipOutputStream);
                 zipOutputStream.closeEntry();
             }
             zipOutputStream.close();
-            return new URL("file://" + jarFile.getAbsolutePath());
+            File file = new File(jarFile.getAbsolutePath());
+            return file.toURI().toURL();
         }
         catch (IOException e)
         {
@@ -59,11 +62,15 @@ public class MavenSourceJarFactory
         List<File> allClassFiles = new ArrayList<File>();
         // a module may not actually have any source, meaning that the outputClassesDirectory will not exist.
         // thus the need to check if it exists
-        final File placeholder = File.createTempFile("placeholder", "txt");
-        allClassFiles.add(placeholder);
+        //final File placeholder = File.createTempFile("placeholder", "txt");
+        //allClassFiles.add(placeholder);
+        //final File placeholder = File.createTempFile("placeholder", "txt");
+        //allClassFiles.add(placeholder);
         if (new File(outputClassesDirectory).exists())
         {
-            allClassFiles.addAll(listFiles(new File(outputClassesDirectory), new String[]{"class"}, true));
+        	for (File file : listFiles(new File(outputClassesDirectory), new String[]{"class"}, true)) {
+        		allClassFiles.add(file);
+        	}
         }
         return allClassFiles;
     }
